@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title></title>
+
+    <!-- Bootstrap -->
+    <link href="/static/js/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/static/js/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/static/js/lib/nprogress/nprogress.css" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link href="/static/js/lib/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+    <link href="/static/js/lib/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+
+    <!--css样式-->
+    <link href="/static/css/custom.min.css" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+<div class="container body">
+    <div class="main_container">
+        <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;">
+                    <a href="#" class="site_title"><i class="fa fa-paw"></i> <span>工作日志</span></a>
+                </div>
+                <div class="clearfix"></div>
+                <!--<ul class="nav side-menu" th:each=" li: ${list}">-->
+                <!--<li>-->
+                <!--<a th:text="${li.name}"><i th:class="${li.icon}"></i></a>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--下拉菜单开始-->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                    <div class="menu_section">
+                        <ul class="nav side-menu" th:each="menu : ${menus}">
+                            <li>
+                                <a><i th:class="${menu.attributes.icon}"></i><span class="span-hfl"
+                                                                                   th:text="${menu.text}"></span><span
+                                        class="fa fa-chevron-down"></span></a>
+
+                                <ul class="nav child_menu" id="changeUl">
+                                    <li th:each="cmenu : ${menu.children}">
+                                        <a th:text="${cmenu.text}" th:attr="data-src=${cmenu.attributes.url}"></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--下拉菜单结束-->
+
+        <!-- 导航开始 -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <nav>
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="">
+                            <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                               aria-expanded="false">
+                                <img src="img/1.png" alt="">
+                            </a>
+                        </li>
+
+                        <li role="presentation" class="dropdown">
+                            <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown"
+                               aria-expanded="false">
+                                <i class="fa fa-comments-o"></i>
+                                <span class="badge bg-green">6</span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </nav>
+            </div>
+        </div>
+        <!-- 导航结束 -->
+
+        <div class="right_col" role="main">
+            <div class="">
+
+                <div class="clearfix"></div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="x_panel">
+                            <iframe class="iframeSrc" frameborder="no" src="/system/people"
+                                    style="width: 100%;height: 722px"></iframe>
+
+
+                            <!--数据还原模态框-->
+                            <div class="modal movefade movemodal" id="movemodal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <span aria-hidden="true"><i class="fa fa-pencil"></i></span>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile"></label>
+                                                    <input type="file" id="exampleInputFile">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger rest_false"><i
+                                                    class="fa fa-times"></i> 取消
+                                            </button>
+                                            <button type="button" class="btn btn-info rest_true"><i
+                                                    class="fa fa-pencil-square-o"></i> 确定
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--确认模态框-->
+                            <div class="modal viewfade" id="viewmodal">
+                                <div class="modal-dialog viewbtn">
+                                    <div class="modal-content content-hfl" style="font-size: 20px;">
+                                        <div class="modal-header">
+                                            <span aria-hidden="true" class="viewbtn_false"><i
+                                                    aria-hidden="true"></i></span>
+                                        </div>
+                                        <div class="modal-body text-center">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--模态框end-->
+                            <div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
+                            <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
+                            <!-- /calendar modal -->
+
+                            <!-- jQuery -->
+                            <script src="/static/js/lib/jquery/dist/jquery.min.js"></script>
+                            <!-- Bootstrap -->
+                            <script src="/static/js/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+                            <!-- FastClick -->
+                            <script src="/static/js/lib/fastclick/lib/fastclick.js"></script>
+                            <!-- NProgress -->
+                            <script src="/static/js/lib/nprogress/nprogress.js"></script>
+                            <!-- FullCalendar -->
+                            <script src="/static/js/lib/moment/min/moment.min.js"></script>
+                            <script src="/static/js/lib/fullcalendar/dist/fullcalendar.min.js"></script>
+
+                            <!-- Custom Theme Scripts -->
+                            <script src="/static/js/custom.min.js"></script>
+                            <script>
+                                $(".side-menu").on("click", "a", function () {
+                                    $('.iframeSrc').attr("src", $(this).attr("data-src"));
+                                });
+                                // $("#jonnt").on("click","a",function(){
+                                //     $('.iframeSrc').attr("src",$(this).attr("data-src"));
+                                // });
+
+                            </script>
+                            <script>
+                                function restore() {
+                                    $(".movefade").fadeIn(1000);
+
+                                    $("#but").click(function () {
+                                        var formData = new FormData();//实例化一个FormData对象
+                                        formData.append("file", $('#exampleInputFile')[0].files[0]);//添加一个文件
+                                        $.ajax({
+                                            type: 'POST',
+                                            url: "/system/data/reduction",
+                                            data: formData,//向后台提交对象，java后端接受的对象类型为MultipartFile，不能为CommonsMultipartFile对象
+                                            processData: false,//这个很有必要，不然不行
+                                            contentType: false, // 不要设置Content-Type请求头
+                                            dataType: "json",
+                                            success: function (data) {
+                                                if (0 == data.res) {
+                                                    alert("备份成功！")
+                                                } else {
+                                                    alert("请选择正确的文件格式！")
+                                                }
+                                            }
+                                        });
+
+                                        $(".movefade").fadeOut(300);
+                                    });
+                                    //取消按钮
+                                    $(document).on("click", ".rest_false", function () {
+                                        $(".movefade").fadeOut(300);
+                                    });
+
+                                }
+                            </script>
+</body>
+
+</html>

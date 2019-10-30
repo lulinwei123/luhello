@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="new_human02.html">
+    <link rel="stylesheet" href=/static/css/new_month02.css>
+    <link rel="stylesheet" href="/static/css/animate.min.css">
+    <link rel="stylesheet" href="/static/font-awsome/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="/static/js/jquery-3.4.0.min.js"></script>
+
+</head>
+<body>
+<form>
+    <fieldset>
+        <div>
+            <h3 style="display: inline-block">周报</h3>
+            <!--<a href="new_human02.html"><i class="fa fa-window-close-o fa-lg" aria-hidden="true" style="display: inline-block;margin-left: 440px"></i></a>-->
+        </div>
+        <p></p>
+        <div>
+            <span style="display: inline-block">本次录入时间：</span>
+            <span style="display: inline-block;" id="currentDate"></span>
+        </div>
+        <p></p>
+        <label class="text_I">本周工作计划：</label>
+        <textarea type="text" placeholder="尝试@TA" id="text_I" readonly class="texeMonth_add"></textarea>
+        <input type="button" value="提交" class="btn_value" id="addPlan" onclick="saveOne(this.value)">
+        <input type="button" value="保存" class="btn_value" id="savaPlan" onclick="saveOne(this.value)">
+        <input type="button" value="修改" class="btn_value" id="updatePlan" onclick="editEnable(this)">
+        <p class="one_p"></p>
+
+        <label>本周工作总结：</label>
+        <textarea type="text" placeholder="尝试@TA" id="text_O" readonly class="texeMonth_add"></textarea>
+        <input type="button" value="提交" class="btn_value" id="addSummary" onclick="saveTwice(this.value)">
+        <input type="button" value="保存" class="btn_value" id="saveSummary" onclick="saveTwice(this.value)">
+        <input type="button" value="修改" class="btn_value" id="updateSummary" onclick="editEnable_Twice(this)">
+
+        <!--显示月计划-->
+        <a href="javascript:showSign();" class="btn_a" id="btn_a" status="off" contchar=" +">本月、本周的计划</a>
+        <div class="signWrap" id="divPop">
+            <div class="sign">
+                <h3>月报</h3>
+                <p></p>
+                <label>本月工作计划：</label>
+                <textarea type="text" placeholder="尝试@TA" id="oneP_plan" readonly class="texeMonth_add"></textarea>
+                <p class="one_p"></p>
+            </div>
+        </div>
+    </fieldset>
+</form>
+</body>
+<script src="/static/js/new_month02.js"></script>
+</html>
