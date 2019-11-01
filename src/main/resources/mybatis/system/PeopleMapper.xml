@@ -192,7 +192,7 @@
 
 
 	<resultMap id="userMap" type="com.hlwxy.xu_boot2.system.domain.PeopleDO">
-		<id property="id" column="uid"/>
+		<id property="id" column="id"/>
 		<id property="username" column="username"/>
 		<id property="password" column="password"/>
 		<id property="email" column="email"/>
@@ -211,7 +211,7 @@
 	</resultMap>
 	<select id="findByUsername" resultMap="userMap">
 		SELECT
-		u.id uid,u.username,u.password,u.email,
+		u.id,u.username,u.password,u.email,
 		r.id rid,r.username rname,r.name name,
 		p.menu_id,p.name pname,p.url,p.perms,p.icon
 		FROM t_people u

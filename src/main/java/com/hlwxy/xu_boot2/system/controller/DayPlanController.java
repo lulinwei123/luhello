@@ -53,14 +53,20 @@ public class DayPlanController {
 	@RequestMapping("/getDayPlan")
 	public Map<String,Object> getDayPlan() {
 		Map<String,Object> map=new HashMap<>();
+		DateTool dateTool=new DateTool();
 		try{
 			PeopleDO people=getUser();
 			DayPlanDO weekPlanDO = new DayPlanDO();
 			weekPlanDO.setId(people.getDayPlanId());
 			//TODO 查询数据，如果这个人没有写计划会有异常
 			DayPlanExtendDO dayPlanExtendDO = dayPlanService.getDayPlanById(weekPlanDO);
-			map.put("dayPlanExtendDO",dayPlanExtendDO);
-			map.put("code",0);
+			if(!dayPlanExtendDO.getDay_plan_time().equals(dateTool.adyAndDay())){
+				map.put("code",0);
+				map.put("msg","您还没有编写今天的计划");
+			}else {
+				map.put("dayPlanExtendDO",dayPlanExtendDO);
+				map.put("code",0);
+			}
 		}catch (Exception e){
 			map.put("code",-1);
 			map.put("msg","系统异常");
@@ -76,10 +82,6 @@ public class DayPlanController {
 	public Map<String,Object> getDayPlanById(@RequestBody DayPlanDO dayPlanDO) {
 		Map<String,Object> map=new HashMap<>();
 		try{
-			//获取写计划的人
-//			PeopleDO people=monthlyPlanService.getPeopleByCode(peopleDO);
-//			DayPlanDO dayPlanDO=new DayPlanDO();
-//			dayPlanDO.setId(people.getDayPlanId());
 			//查询日计划数据
 			DayPlanExtendDO dayPlanExtendDO = dayPlanService.getDayPlanById(dayPlanDO);
 
@@ -191,13 +193,50 @@ public class DayPlanController {
 						dayPlanService.updatePeopleByCode(people);
 						map.put("code",0);
 					}
+				}else {//不是本周的周计划
+
+					if (dayPlanDO.getDay_plan_state()==1){ //保存按钮
+						dayPlanDO.setDay_plan_code(String.valueOf(UUID.randomUUID()));
+						dayPlanDO.setDay_plan_entry_time(dateTool.adyAndDay());
+						dayPlanDO.setDay_plan_time(dateTool.adyAndDay());
+						dayPlanDO.setDay_plan_reply("否");//是否查看，默认为否
+						dayPlanDO.setDay_plan_see("否");//是否回复，默认为否
+						dayPlanDO.setPeo_id(people.getId());
+						dayPlanDO.setWeek_plan_time(dateTool.WeekAndWeek());//改日计划属于第几周
+						dayPlanService.addDayPlan(dayPlanDO);
+						DayPlanExtendDO dayPlanExtendDO=dayPlanService.getDayPlanByCode(dayPlanDO.getDay_plan_code());
+						people.setDayPlanId(dayPlanExtendDO.getId());
+						//修改人员日计划编码
+						dayPlanService.updatePeopleByCode(people);
+						map.put("code",0);
+						map.put("msg","保存成功！");
+					}else {
+						map.put("code",-1);
+						map.put("msg","请先编写周计划！");
+					}
+
+				}
+			}else {  //未编写周计划
+				if (dayPlanDO.getDay_plan_state()==1){ //保存按钮
+					dayPlanDO.setDay_plan_code(String.valueOf(UUID.randomUUID()));
+					dayPlanDO.setDay_plan_entry_time(dateTool.adyAndDay());
+					dayPlanDO.setDay_plan_time(dateTool.adyAndDay());
+					dayPlanDO.setDay_plan_reply("否");//是否查看，默认为否
+					dayPlanDO.setDay_plan_see("否");//是否回复，默认为否
+					dayPlanDO.setPeo_id(people.getId());
+					dayPlanDO.setWeek_plan_time(dateTool.WeekAndWeek());//改日计划属于第几周
+					dayPlanService.addDayPlan(dayPlanDO);
+					DayPlanExtendDO dayPlanExtendDO=dayPlanService.getDayPlanByCode(dayPlanDO.getDay_plan_code());
+					people.setDayPlanId(dayPlanExtendDO.getId());
+					//修改人员日计划编码
+					dayPlanService.updatePeopleByCode(people);
+					map.put("code",0);
+					map.put("msg","保存成功！");
 				}else {
 					map.put("code",-1);
 					map.put("msg","请先编写周计划！");
 				}
-			}else {
-				map.put("code",-1);
-				map.put("msg","请先编写周计划！");
+
 			}
 		}catch (Exception e){
 			map.put("code",-1);

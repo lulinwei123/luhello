@@ -32,11 +32,11 @@ window.onload=function () {
                 );
                 //判断日志状态
                 if(obj["day_plan_state"]==1){
-                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "以保存";
+                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待提交";
                 }else if (obj["day_plan_state"]==2){
                     document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待审核";
                 }else if (obj["day_plan_state"]==3){
-                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "请重写";
+                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待提交";
                 }else if (obj["day_plan_state"]==4){
                     document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "已审核";
                 }
@@ -166,11 +166,11 @@ function monthplanSelect() {
                 );
                 //判断日志状态
                 if(obj["day_plan_state"]==1){
-                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "以保存";
+                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待提交";
                 }else if (obj["day_plan_state"]==2){
                     document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待审核";
                 }else if (obj["day_plan_state"]==3){
-                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "请重写";
+                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待提交";
                 }else if (obj["day_plan_state"]==4){
                     document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "已审核";
                 }
@@ -386,11 +386,11 @@ function handleData(data1,data2) {
                 );
                 //判断日志状态
                 if(obj["day_plan_state"]==1){
-                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "以保存";
+                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待提交";
                 }else if (obj["day_plan_state"]==2){
                     document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待审核";
                 }else if (obj["day_plan_state"]==3){
-                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "请重写";
+                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待提交";
                 }else if (obj["day_plan_state"]==4){
                     document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "已审核";
                 }
@@ -503,11 +503,11 @@ function queryHandleData(data1,data2) {
                 );
                 //判断日志状态
                 if(obj["day_plan_state"]==1){
-                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "以保存";
+                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待提交";
                 }else if (obj["day_plan_state"]==2){
                     document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待审核";
                 }else if (obj["day_plan_state"]==3){
-                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "请重写";
+                    document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "待提交";
                 }else if (obj["day_plan_state"]==4){
                     document.getElementById(obj["day_plan_code"]+"abc").innerHTML = "已审核";
                 }

@@ -34,4 +34,5 @@ public interface PeopleDao {
 	PeopleDO getpeoname(String peoName);
 
 	PeopleDO findByUsername(@Param("username") String username, @Param("password") String password);
+
 }

@@ -126,13 +126,13 @@ function invalidSum(state) {
 }
 //修改
 function editEnable(obj) {
-    var preInputObj = $(obj).prev().prev().prev();
+    var preInputObj = $("#text_I");
     $(preInputObj).removeAttr("readonly");
     $(preInputObj).focus();
 }
 //修改twice
 function editEnable_Twice(obj) {
-    var preInputObj_Twice = $(obj).prev().prev().prev();
+    var preInputObj_Twice = $("#text_O");
     $(preInputObj_Twice).removeAttr("readonly");
     $(preInputObj_Twice).focus();
 }
@@ -173,7 +173,7 @@ function saveOne(re) {
         }
     });
 
-    $("input[id='text_I']").each(function (index,element) {
+    $("textarea[id='text_I']").each(function (index,element) {
         $(element).attr("readonly","readonly");
     })
 }
@@ -213,7 +213,7 @@ function saveTwice(re) {
         }
     });
 
-    $("input[id='text_O']").each(function (i, element) {
+    $("textarea[id='text_O']").each(function (i, element) {
         $(element).attr("readonly", "readonly");
     })
 }

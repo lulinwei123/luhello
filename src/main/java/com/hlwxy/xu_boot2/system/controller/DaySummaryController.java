@@ -54,14 +54,20 @@ public class DaySummaryController {
 	@RequestMapping("/getDaySummary")
 	public Map<String,Object> getDaySummary() {
 		Map<String,Object> map=new HashMap<>();
+		DateTool dateTool=new DateTool();
 		try{
 			PeopleDO people=getUser();
 			DaySummaryDo daySummaryDo = new DaySummaryDo();
 			daySummaryDo.setId(people.getDaySummaryId());
 			//查询数据
 			DaySummaryExtendDO daySummaryExtendDO = daySummaryService.getDaySummaryById(daySummaryDo);
-			map.put("daySummaryExtendDO",daySummaryExtendDO);
-			map.put("code",0);
+			if(!daySummaryExtendDO.getDay_summary_time().equals(dateTool.adyAndDay())){
+				map.put("code",0);
+				map.put("msg","您还没有编写今天总结");
+			}else {
+				map.put("daySummaryExtendDO",daySummaryExtendDO);
+				map.put("code",0);
+			}
 		}catch (Exception e){
 			map.put("code",-1);
 			map.put("msg","系统异常");
@@ -77,10 +83,6 @@ public class DaySummaryController {
 	public Map<String,Object> getDaySummaryById(@RequestBody DaySummaryDo daySummaryDo) {
 		Map<String,Object> map=new HashMap<>();
 		try{
-			//获取写计划的人
-//			PeopleDO people=monthlyPlanService.getPeopleByCode(peopleDO);
-//			DaySummaryDo daySummaryDo=new DaySummaryDo();
-//			daySummaryDo.setId(people.getDaySummaryId());
 			//查询日总结数据
 			DaySummaryExtendDO daySummaryExtendDO = daySummaryService.getDaySummaryById(daySummaryDo);
 			//封装到map
@@ -190,13 +192,47 @@ public class DaySummaryController {
 						map.put("code",0);
 					}
 
+				}else {  //不是今天的日计划
+					if (daySummaryDo.getDay_summary_state()==1){ //保存按钮
+						daySummaryDo.setDay_summary_code(String.valueOf(UUID.randomUUID()));
+						daySummaryDo.setDay_summary_entry_time(dateTool.adyAndDay());
+						daySummaryDo.setDay_summary_time(dateTool.adyAndDay());
+						daySummaryDo.setDay_summary_reply("否");//是否查看，默认为否
+						daySummaryDo.setDay_summary_see("否");//是否回复，默认为否
+						daySummaryDo.setPeo_id(people.getId());
+						daySummaryService.addDaySummary(daySummaryDo);
+						DaySummaryExtendDO daySummaryExtendDO=daySummaryService.getDaySummaryByCode(daySummaryDo.getDay_summary_code());
+						people.setDaySummaryId(daySummaryExtendDO.getId());
+						//修改人员月计划编码
+						daySummaryService.updatePeopleByCode(people);
+						map.put("code",0);
+						map.put("msg","保存成功！");
+					}else {
+						map.put("code",-1);
+						map.put("msg","请先编写日计划！");
+					}
+
+				}
+			}else {  //未编写日计划
+				if (daySummaryDo.getDay_summary_state()==1){ //保存按钮
+					daySummaryDo.setDay_summary_code(String.valueOf(UUID.randomUUID()));
+					daySummaryDo.setDay_summary_entry_time(dateTool.adyAndDay());
+					daySummaryDo.setDay_summary_time(dateTool.adyAndDay());
+					daySummaryDo.setDay_summary_reply("否");//是否查看，默认为否
+					daySummaryDo.setDay_summary_see("否");//是否回复，默认为否
+					daySummaryDo.setPeo_id(people.getId());
+					daySummaryService.addDaySummary(daySummaryDo);
+					DaySummaryExtendDO daySummaryExtendDO=daySummaryService.getDaySummaryByCode(daySummaryDo.getDay_summary_code());
+					people.setDaySummaryId(daySummaryExtendDO.getId());
+					//修改人员月计划编码
+					daySummaryService.updatePeopleByCode(people);
+					map.put("code",0);
+					map.put("msg","保存成功！");
 				}else {
 					map.put("code",-1);
 					map.put("msg","请先编写日计划！");
 				}
-			}else {
-				map.put("code",-1);
-				map.put("msg","请先编写日计划！");
+
 			}
 
 		}catch (Exception e){

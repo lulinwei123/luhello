@@ -47,6 +47,7 @@ public class MonthlyController {
 	@RequestMapping("/getMonthlyPlan")
 	public Map<String,Object> getMonthlyPlan() {
 		Map<String,Object> map=new HashMap<>();
+		DateTool dateTool=new DateTool();
 		try{
 			PeopleDO people=getUser();
 //			PeopleDO people=monthlyPlanService.getPeople(user);
@@ -54,8 +55,14 @@ public class MonthlyController {
 			monthlyPlan.setId(people.getMonthlyPlanId());
 			//查询数据
 			MonthlyPlanExtendDo monthlyPlan1 = monthlyPlanService.getMonthlyPlanById(monthlyPlan);
-			map.put("monthlyPlan1",monthlyPlan1);
-			map.put("code",0);
+			if(!monthlyPlan1.getMonthly_plan_time().equals(dateTool.years())){
+				map.put("code",0);
+				map.put("msg","您还没有编写本月的计划");
+			}else {
+				map.put("monthlyPlan1",monthlyPlan1);
+				map.put("code",0);
+			}
+
 		}catch (Exception e){
 			map.put("code",-1);
 			map.put("msg","系统异常");
@@ -191,6 +198,7 @@ public class MonthlyController {
 					monthlyPlanService.addMonthlyPlan(monthlyPlan);
 					//查询新添加的月计划
 					MonthlyPlanExtendDo monthlyPlanExtendDo=monthlyPlanService.getMonthlyplanByCode(monthlyPlan.getMonthly_plan_code());
+					people.setMonthlyPlanId(monthlyPlanExtendDo.getId());
 					//修改人员月计划编码
 					monthlyPlanService.updatePeopleByCode(people);
 					map.put("code",0);

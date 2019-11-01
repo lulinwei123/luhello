@@ -2,6 +2,7 @@ package com.hlwxy.xu_boot2.system.service;
 
 
 import com.hlwxy.xu_boot2.system.domain.PeopleDO;
+import com.hlwxy.xu_boot2.system.domain.UserVO;
 import com.hlwxy.xu_boot2.system.dto.PeopleDTO;
 import org.apache.ibatis.annotations.Param;
 
@@ -37,4 +38,9 @@ public interface PeopleService {
 	 //	 * @return
 	 //	 */
 	PeopleDO findByUsername(@Param("username") String username, @Param("password") String password);
+
+	int modifyPassword(String password, String newpassword, String username);
+
+
+
 }

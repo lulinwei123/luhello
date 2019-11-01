@@ -148,10 +148,10 @@ function load() {
                                         var d = '<a class="btn btn-warning btn-sm" href="#" title="删除"  mce_href="#" onclick="remove(\''
                                             + row.id
                                             + '\')">删除</a> ';
-										var f = '<a class="btn btn-success btn-sm" href="#" title="备用"  mce_href="#" onclick="resetPwd(\''
+										var f = '<a class="btn btn-success btn-sm" href="#" title="修改密码"  mce_href="#" onclick="resetPwd(\''
 												+ row.id
 												+ '\')"><i class="fa fa-key"></i></a> ';
-										return e + d ;
+										return e + d +f ;
 									}
 								} ]
 					});
@@ -162,7 +162,7 @@ function reLoad() {
 function resetPwd() {
     layer.open({
         type : 2,
-        title : '查看内容',
+        title : '修改密码',
         maxmin : true,
         shadeClose : false, // 点击遮罩关闭层
         area : [ '400px', '260px' ],

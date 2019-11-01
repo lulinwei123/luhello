@@ -1,7 +1,9 @@
 package com.hlwxy.xu_boot2.system.service.impl;
 
+import com.hlwxy.xu_boot2.common.utils.MD5Utils;
 import com.hlwxy.xu_boot2.system.dao.PeopleDao;
 import com.hlwxy.xu_boot2.system.domain.PeopleDO;
+import com.hlwxy.xu_boot2.system.domain.UserVO;
 import com.hlwxy.xu_boot2.system.dto.PeopleDTO;
 import com.hlwxy.xu_boot2.system.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 @Service
@@ -71,5 +74,20 @@ public class PeopleServiceImpl implements PeopleService {
 		return peopleDao.findByUsername(username,password);
 	}
 
+	@Override
+	public int modifyPassword(String password, String newpassword, String username) {
+		if(password!=null){
+			PeopleDO user=peopleDao.findByUsername(username,password);
+			Integer id=user.getId();
+			String yspassword=user.getPassword();
+			if(yspassword.equals(password)){
+				PeopleDO u=new PeopleDO();
+				u.setId(id);
+				u.setPassword(newpassword);
+				return peopleDao.update(u);
+			}
+		}
+		return 0;
+	}
 
-}
+	}

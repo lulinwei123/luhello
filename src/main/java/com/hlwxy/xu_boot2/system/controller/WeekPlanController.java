@@ -53,14 +53,22 @@ public class WeekPlanController {
 	@RequestMapping("/getWeekPlan")
 	public Map<String,Object> getWeekPlan() {
 		Map<String,Object> map=new HashMap<>();
+		DateTool dateTool=new DateTool();
 		try{
 			PeopleDO people=getUser();
 			WeekPlanDO weekPlanDO = new WeekPlanDO();
 			weekPlanDO.setId(people.getWeekPlanId());
 			//查询数据
 			WeekPlanExtendDO weekPlanExtendDO = weekPlanService.getWeekPlanById(weekPlanDO);
-			map.put("weekPlanExtendDO",weekPlanExtendDO);
-			map.put("code",0);
+
+			if(!weekPlanExtendDO.getWeek_plan_time().equals(dateTool.WeekAndWeek())){
+				map.put("code",0);
+				map.put("msg","您还没有编写本周的计划");
+			}else {
+				map.put("weekPlanExtendDO",weekPlanExtendDO);
+				map.put("code",0);
+			}
+
 		}catch (Exception e){
 			map.put("code",-1);
 			map.put("msg","系统异常");
@@ -76,16 +84,9 @@ public class WeekPlanController {
 	public Map<String,Object> getWeekPlanById(@RequestBody WeekPlanDO weekPlanDO) {
 		Map<String,Object> map=new HashMap<>();
 		try{
-			//获取写计划的人
-//			PeopleDO people=monthlyPlanService.getPeopleByCode(peopleDO);
-//			WeekPlanDO weekPlanDO=new WeekPlanDO();
-//			weekPlanDO.setId(people.getWeekPlanId());
 			//查询周计划数据
 			WeekPlanExtendDO weekPlanExtendDO = weekPlanService.getWeekPlanById(weekPlanDO);
-			//获取月计划数据
-//			MonthlyPlanExtendDo monthlyPlanExtendDo= (MonthlyPlanExtendDo) monthlyController.getMonthlyPlanById(peopleDO).get("monthlyPlan1");
 			map.put("weekPlanExtendDO",weekPlanExtendDO);
-//			map.put("monthlyPlanExtendDo",monthlyPlanExtendDo);
 			map.put("code",0);
 		}catch (Exception e){
 			map.put("code",-1);
@@ -180,12 +181,48 @@ public class WeekPlanController {
 						map.put("code",0);
 					}
 				}else {
+					if (weekPlanDO.getWeek_plan_state()==1){ //保存按钮
+						weekPlanDO.setWeek_plan_code(String.valueOf(UUID.randomUUID()));
+						weekPlanDO.setWeek_plan_entry_time(dateTool.adyAndDay());
+						weekPlanDO.setWeek_plan_time(dateTool.WeekAndWeek());
+						weekPlanDO.setWeek_plan_reply("否");//是否查看，默认为否
+						weekPlanDO.setWeek_plan_see("否");//是否回复，默认为否
+						weekPlanDO.setPeo_id(people.getId());
+						weekPlanDO.setMonthly_plan_time(dateTool.years());//改周计划属于那个月
+						weekPlanService.addWeekPlan(weekPlanDO);
+						WeekPlanExtendDO weekPlanExtendDO=weekPlanService.getWeekPlanByCode(weekPlanDO.getWeek_plan_code());
+						people.setWeekPlanId(weekPlanExtendDO.getId());
+						//修改人员周计划编码
+						weekPlanService.updatePeopleByCode(people);
+						map.put("code",0);
+						map.put("msg","保存成功！");
+					}else {
+						map.put("code",-1);
+						map.put("msg","请先编写月计划！");
+					}
+
+				}
+			}else {
+				if (weekPlanDO.getWeek_plan_state()==1){ //保存按钮
+					weekPlanDO.setWeek_plan_code(String.valueOf(UUID.randomUUID()));
+					weekPlanDO.setWeek_plan_entry_time(dateTool.adyAndDay());
+					weekPlanDO.setWeek_plan_time(dateTool.WeekAndWeek());
+					weekPlanDO.setWeek_plan_reply("否");//是否查看，默认为否
+					weekPlanDO.setWeek_plan_see("否");//是否回复，默认为否
+					weekPlanDO.setPeo_id(people.getId());
+					weekPlanDO.setMonthly_plan_time(dateTool.years());//改周计划属于那个月
+					weekPlanService.addWeekPlan(weekPlanDO);
+					WeekPlanExtendDO weekPlanExtendDO=weekPlanService.getWeekPlanByCode(weekPlanDO.getWeek_plan_code());
+					people.setWeekPlanId(weekPlanExtendDO.getId());
+					//修改人员周计划编码
+					weekPlanService.updatePeopleByCode(people);
+					map.put("code",0);
+					map.put("msg","保存成功！");
+				}else {
 					map.put("code",-1);
 					map.put("msg","请先编写月计划！");
 				}
-			}else {
-				map.put("code",-1);
-				map.put("msg","请先编写月计划！");
+
 			}
 
 		}catch (Exception e){

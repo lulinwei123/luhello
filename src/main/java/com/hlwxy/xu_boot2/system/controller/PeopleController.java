@@ -1,16 +1,14 @@
 package com.hlwxy.xu_boot2.system.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.hlwxy.xu_boot2.common.utils.MD5Utils;
+import com.hlwxy.xu_boot2.common.comtroller.BaseController;
+import com.hlwxy.xu_boot2.common.config.Constant;
 import com.hlwxy.xu_boot2.common.utils.PageUtils;
 import com.hlwxy.xu_boot2.common.utils.Query;
 import com.hlwxy.xu_boot2.common.utils.R;
-import com.hlwxy.xu_boot2.system.domain.CompanyDO;
-import com.hlwxy.xu_boot2.system.domain.DepartmentDO;
-import com.hlwxy.xu_boot2.system.domain.PeopleDO;
-import com.hlwxy.xu_boot2.system.domain.PositionDO;
+import com.hlwxy.xu_boot2.system.domain.*;
 import com.hlwxy.xu_boot2.system.dto.PeopleDTO;
 import com.hlwxy.xu_boot2.system.service.CompanyService;
 import com.hlwxy.xu_boot2.system.service.DepartmentService;
@@ -38,7 +36,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/system/people")
-public class PeopleController {
+public class PeopleController extends BaseController{
 
 	@Autowired
 	private CompanyService companyService;
@@ -157,12 +155,29 @@ public class PeopleController {
 		return R.ok();
 	}
 
+	//      修改密码
+	@RequestMapping("/resetPwd")
+	@ResponseBody
+	public String resetPwd(String password, String newpassword, String username){
+		Map<String,Object> map=new HashMap<>();
+		int i= peopleService.modifyPassword( password, newpassword, username);
+		if(i==1){
+			map.put("code",0);
+			map.put("msg","修改成功！");
 
-
-	@GetMapping("/resetPwd")
-	String resetPwd(String peoName, Model model) {
-		com.hlwxy.xu_boot2.system.domain.PeopleDO peo = peopleService.getpeoname(peoName);
-		model.addAttribute("PeopleDO",peo);
-		return "11" ;
+		}else {
+			map.put("code",1);
+			map.put("msg","修改失败");
+		}
+		return "system/people/resetPwd";
 	}
+
+//@GetMapping("/resetPwd/{id}")
+//String resetPwd(@PathVariable("id") Integer id, Model model) {
+//
+//	PeopleDO peopleDO = new PeopleDO();
+//	peopleDO.setId(id);
+//	model.addAttribute("people", peopleDO);
+//	return "/system/people/resetPwd";
+//}
 }
